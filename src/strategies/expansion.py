@@ -13,6 +13,9 @@ class Expansion:
         sorted_planets = {}
         for my in self.u.my_planets():
             for not_my in self.u.not_my_planets():
-                 
-            
+#                 score = 
+#                 sorted_planets[]
+                pass
      
+     def calc_score():
+         pass
