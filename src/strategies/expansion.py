@@ -3,8 +3,6 @@ Created on Oct 27, 2010
 
 @author: dmitry.serdyuk
 '''
-from planetwars import player, planet
-import math
 class Expansion:
     def __init__(self, universe):
         self.u = universe

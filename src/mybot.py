@@ -2,11 +2,13 @@ from planetwars import BaseBot, Game
 from planetwars.universe import Universe
 from strategies.expansion import Expansion
 import math
+from planetwars.planet import Planet
+from planetwars.fleet import Fleet
 
 # This shows how you can add your own functionality to game objects (Universe in this case).
 
 class MyBot(BaseBot):
-    """Modified StupidBot that uses new our own MyUniverse (see below)"""
+    """ My super bot"""    
     def do_turn(self):
         strat = Expansion()
         strat.act()
@@ -14,19 +16,21 @@ class MyBot(BaseBot):
 class MyUniverse(Universe):
     average_dist = 0
     
-    def __init__(self):
+    def __init__(self, game, planet_class=Planet, fleet_class=Fleet):
+        super(MyUniverse, self).__init__(game, planet_class, fleet_class)
         #calculate average distance
         distances = []
         for pl1 in self.planets:
             for pl2 in self.planets:
                 distances.append(pl1.distance(pl2))
-        sorted = sorted(distances)
-        count = len(sorted)
+        sorted_dist = sorted(distances)
+        count = len(sorted_dist)
         if bool(count % 2):
-            median = sorted[math.ceil(count / 2)]
+            median = sorted_dist[math.ceil(count / 2)]
         else:
-            floor_index = math.floor(count / 2)
-            median = (sorted[floor_index] + sorted[floor_index + 1]) / 2
+            floor_index = int(count / 2)
+            median = (sorted_dist[floor_index]
+                     + sorted_dist[floor_index + 1]) / 2
         return median
                 
     def normalize_dist(self, dist):
