@@ -5,7 +5,7 @@ import math
 
 # This shows how you can add your own functionality to game objects (Universe in this case).
 
-class StupidBot(BaseBot):
+class MyBot(BaseBot):
     """Modified StupidBot that uses new our own MyUniverse (see below)"""
     def do_turn(self):
         strat = Expansion()
@@ -32,4 +32,4 @@ class MyUniverse(Universe):
     def normalize_dist(self, dist):
         return dist / self.average_dist
 
-Game(StupidBot, universe_class=MyUniverse)
+Game(MyBot, universe_class=MyUniverse)
