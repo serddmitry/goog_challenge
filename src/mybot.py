@@ -28,10 +28,15 @@ class MyUniverse(Universe):
     def calc_average_distance(self):
         #calculate average distance
         distances = []
-        for pl1 in self.planets:
-            for pl2 in self.planets:
+        for i, pl1 in enumerate(self.planets):
+            for j in xrange(i+1, len(self.planets)):
+                log.info("self.planets is %s",self.planets)
+                log.info(dir(self.planets))
+                pl2 = self.planets[j]
+                log.debug("appending %d to %d", i, j)
                 distances.append(pl1.distance(pl2))
         sorted_dist = sorted(distances)
+        log.debug("distances are %s", str(sorted_dist))
         count = len(sorted_dist)
         if bool(count % 2):
             median = sorted_dist[int(count / 2)]
