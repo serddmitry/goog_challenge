@@ -40,7 +40,7 @@ class Game(object):
 
         self.logging_enabled = bool(options.logfile)
         if self.logging_enabled:
-            logging.basicConfig(filename=options.logfile, level=getattr(logging, options.loglevel), format="%(asctime)s %(levelname)s: %(message)s")
+            logging.basicConfig(filename=options.logfile, filemode="w", level=getattr(logging, options.loglevel), format="%(asctime)s %(levelname)s: %(message)s")
                     
         self.universe = universe_class(self, planet_class=planet_class, fleet_class=fleet_class)
         self.bot = bot_class(self.universe)
