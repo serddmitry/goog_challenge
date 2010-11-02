@@ -12,6 +12,8 @@ class Expansion:
         self.u = universe
     
     def act(self):
+        if len(self.u.my_fleets) == 2:
+            return
         #if there is a big planet nearby that can be captured - do it
         scores = {} #{planet id: [(score, planet2)]}
         for my in self.u.my_planets:
@@ -49,5 +51,5 @@ class Expansion:
         
     
     def ships_to_send(self, planets):
-        return min(planets[0].ship_count, planets[1].ship_count);
+        return min(planets[0].ship_count, planets[1].ship_count)
     
