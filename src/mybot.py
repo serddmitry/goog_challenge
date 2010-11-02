@@ -47,5 +47,10 @@ class MyUniverse(Universe):
                 
     def normalize_dist(self, dist):
         return dist / self.average_dist
+    
+    def planet_by_id(self, id):
+        for pl in self.planets:
+            if pl.id == id:
+                return pl
 
 Game(MyBot, universe_class=MyUniverse)
