@@ -3,6 +3,7 @@ Created on Oct 27, 2010
 
 @author: dmitry.serdyuk
 '''
+from distances import Median
 from logging import getLogger
 
 log = getLogger(__name__)

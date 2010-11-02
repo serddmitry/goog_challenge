@@ -5,6 +5,7 @@ import math
 from planetwars.planet import Planet
 from planetwars.fleet import Fleet
 from logging import getLogger
+from distances import Median
 
 # This shows how you can add your own functionality to game objects (Universe in this case).
 log = getLogger(__name__)
@@ -20,6 +21,7 @@ class MyBot(BaseBot):
 
 class MyUniverse(Universe):
     average_dist = -1
+    distance_strategy = Median()
     
     def init(self):
         if self.average_dist == -1:
@@ -35,18 +37,10 @@ class MyUniverse(Universe):
                 distances.append(pl1.distance(pl2))
         sorted_dist = sorted(distances)
         log.debug("distances are %s", str(sorted_dist))
-        count = len(sorted_dist)
-        if bool(count % 2):
-            median = sorted_dist[int(count / 2)]
-        else:
-            floor_index = int(count / 2)
-            median = (sorted_dist[floor_index]
-                     + sorted_dist[floor_index + 1]) / 2
-        log.info("Average distance is %d", median)
-        self.average_dist = median
+        self.distance_strategy.init(sorted_dist)
                 
     def normalize_dist(self, dist):
-        return dist / self.average_dist
+        return self.distance_strategy.normalize(dist)
     
     def planet_by_id(self, id):
         for pl in self.planets:
