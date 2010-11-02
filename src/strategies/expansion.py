@@ -3,6 +3,10 @@ Created on Oct 27, 2010
 
 @author: dmitry.serdyuk
 '''
+from logging import getLogger
+
+log = getLogger(__name__)
+
 class Expansion:
     def __init__(self, universe):
         self.u = universe
@@ -10,7 +14,7 @@ class Expansion:
     def act(self):
         #if there is a big planet nearby that can be captured - do it
         scores = {} #{planet id: [(score, planet2)]}
-        for my in self.u.my_planets():
+        for my in self.u.my_planets:
             scores[my.id] = self.scores_for_planets(my, self.u.not_my_planets)
         selected_planets = self.find_planet_to_attack(scores)
         ships_to_send = self.ships_to_send(selected_planets)
@@ -23,13 +27,26 @@ class Expansion:
     def scores_for_planets(self, my_planet, planets):
         result = []
         for pl in planets:
-            score = self.calc_score(my_planet, pl)
+            score = self.score_for_planet(my_planet, pl)
             result.append((score, pl))
         return result
     
-    ''' @return: tuple of source planet and destination planet '''        
+    '''
+    Finds a tuple of (my_planet's_id, not_my_planet) that has best score
+    @param scores: A dictionary having ids of my planets as keys
+                   and list of tuples of kind (score, not_my_planet).
+    @return: tuple of source planet and destination planet
+    '''        
     def find_planet_to_attack(self, scores):
-        pass
+        max_score = 0,
+        for my_planet_id, tuples_list in scores.iteritems():
+            for score, not_my_planet in tuples_list:
+                if score > max_score[0]:
+                    max_score = (score, my_planet_id, not_my_planet)
+        log.info("Found  best score (%d) for my planet {%d} and not_my_planet\
+                  {%s}", max_score[0], max_score[1], max_score[2])
+        return (self.u.planet_by_id(max_score[1]), max_score[2])        
+        
     
     def ships_to_send(self, planets):
         return min(planets[0].ship_count, planets[1].ship_count);
