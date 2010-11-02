@@ -1,4 +1,4 @@
 .hg
 .hgignore
 *log*.txt
-.pyc
+*.pyc
