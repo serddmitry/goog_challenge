@@ -28,12 +28,10 @@ class MyUniverse(Universe):
     def calc_average_distance(self):
         #calculate average distance
         distances = []
-        for i, pl1 in enumerate(self.planets):
-            for j in xrange(i+1, len(self.planets)):
-                log.info("self.planets is %s",self.planets)
-                log.info(dir(self.planets))
-                pl2 = self.planets[j]
-                log.debug("appending %d to %d", i, j)
+        planets_list = list(self.planets)
+        for i, pl1 in enumerate(planets_list):
+            for j in xrange(i+1, len(planets_list)):
+                pl2 = planets_list[j]
                 distances.append(pl1.distance(pl2))
         sorted_dist = sorted(distances)
         log.debug("distances are %s", str(sorted_dist))
@@ -44,7 +42,7 @@ class MyUniverse(Universe):
             floor_index = int(count / 2)
             median = (sorted_dist[floor_index]
                      + sorted_dist[floor_index + 1]) / 2
-        log.debug("average distance is %d", median)
+        log.info("Average distance is %d", median)
         self.average_dist = median
                 
     def normalize_dist(self, dist):
