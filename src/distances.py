@@ -7,20 +7,15 @@ from logging import getLogger
 
 log = getLogger(__name__)
 
-class Median:
-    def init(self, sorted_dist):
-        count = len(sorted_dist)
-        if bool(count % 2):
-            median = sorted_dist[int(count / 2)]
-        else:
-            floor_index = int(count / 2)
-            median = (sorted_dist[floor_index]
-                     + sorted_dist[floor_index + 1]) / 2
-        log.info("Average distance is %d", median)
-        self._average_dist = median
+class Linear:
+    '''
+    Linear normalizes data, so the values [1,2,3,4,5] translated into
+    [0, 0.25, 0.5, 0.75, 1], so we could calculate scores using different
+    parameters.
+    '''
+    def init(self, data_set):
+        self.xmin = min(data_set)
+        self.xmax = max(data_set)
     
-    def normalize(self, dist):
-        return dist / self._average_dist
-    
-class QuotientOfMax:
-    pass
+    def normalize(self, value):
+        return (value - self.xmin) / (self.xmax - self.xmin)
