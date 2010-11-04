@@ -47,6 +47,13 @@ class MyUniverse(Universe):
     def normalize_growth(self, growth):
         return self.growth_norm.normalize(growth)
     
+    def normalize_based_force(self, ships):
+        ships_set = [pl.ship_count for pl in self.my_planets]
+        log.debug("ships_set is %s", ships_set)
+        norm = self.normalization_strategy()
+        norm.init(ships_set)
+        return norm.normalize(ships)
+    
     def planet_by_id(self, id):
         for pl in self.planets:
             if pl.id == id:

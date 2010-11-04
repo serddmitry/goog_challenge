@@ -12,6 +12,7 @@ log = getLogger(__name__)
 class Expansion:
     growth_weight = 1
     dist_weight = 1.5
+    available_ships_weight = 1
     
     def __init__(self, universe):
         self.u = universe
@@ -31,7 +32,11 @@ class Expansion:
     def score_for_planet(self, my_planet, not_my_planet):
         norm_dist = self.u.normalize_dist(my_planet.distance(not_my_planet))
         norm_growth = self.u.normalize_growth(not_my_planet.growth_rate)
-        return self.dist_weight * norm_dist + self.growth_weight * norm_growth;
+        norm_force = self.u.normalize_based_force(my_planet.ship_count)
+        log.debug("norm_force for planet(shipcount is %d) %s is %f",my_planet.ship_count,my_planet, norm_force)
+        return self.dist_weight * norm_dist +\
+               self.growth_weight * norm_growth +\
+               self.available_ships_weight * norm_force;
 
     def scores_for_planets(self, my_planet, planets):
         result = []
