@@ -4,10 +4,15 @@ Created on Oct 27, 2010
 @author: dmitry.serdyuk
 '''
 from logging import getLogger
+import __future__
+import sys
 
 log = getLogger(__name__)
 
 class Expansion:
+    growth_weight = 1
+    dist_weight = 1.5
+    
     def __init__(self, universe):
         self.u = universe
     
@@ -24,7 +29,9 @@ class Expansion:
                           ships_to_send)
      
     def score_for_planet(self, my_planet, not_my_planet):
-        return not_my_planet.growth_rate;
+        norm_dist = self.u.normalize_dist(my_planet.distance(not_my_planet))
+        norm_growth = self.u.normalize_growth(not_my_planet.growth_rate)
+        return self.dist_weight * norm_dist + self.growth_weight * norm_growth;
 
     def scores_for_planets(self, my_planet, planets):
         result = []

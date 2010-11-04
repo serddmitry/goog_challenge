@@ -42,7 +42,7 @@ class MyUniverse(Universe):
             self.growth_norm.init(growth_rates)
                 
     def normalize_dist(self, dist):
-        return self.distance_strategy.normalize(dist)
+        return 1-self.distance_norm.normalize(dist)
     
     def normalize_growth(self, growth):
         return self.growth_norm.normalize(growth)
