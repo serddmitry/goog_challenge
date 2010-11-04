@@ -19,23 +19,33 @@ class MyBot(BaseBot):
 class MyUniverse(Universe):
     normalization_strategy = normalization.Linear
     
-    distances_norm = None
+    distance_norm = None
+    growth_norm = None
+    
     
     
     def init(self):
-        if not self.distances_norm:
-            self.distances_norm = self.normalization_strategy()
+        if not self.distance_norm:
+            self.distance_norm = self.normalization_strategy()
             distances = []
             planets_list = list(self.planets)
             for i, pl1 in enumerate(planets_list):
                 for j in xrange(i+1, len(planets_list)):
                     pl2 = planets_list[j]
                     distances.append(pl1.distance(pl2))
-            self.distances_norm.init(distances)
-            log.debug("normalizing distance %d",self.distances_norm.normalize(1))
+            self.distance_norm.init(distances)
+        if not self.growth_norm:
+            self.growth_norm = self.normalization_strategy()
+            growth_rates = set()
+            for pl in self.planets:
+                growth_rates.add(pl.growth_rate)
+            self.growth_norm.init(growth_rates)
                 
     def normalize_dist(self, dist):
         return self.distance_strategy.normalize(dist)
+    
+    def normalize_growth(self, growth):
+        return self.growth_norm.normalize(growth)
     
     def planet_by_id(self, id):
         for pl in self.planets:
