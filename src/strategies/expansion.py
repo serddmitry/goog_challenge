@@ -63,5 +63,6 @@ class Expansion:
         
     
     def ships_to_send(self, planets):
-        return min(planets[0].ship_count, planets[1].ship_count)
+        return max(float(planets[0].ship_count*0.1),
+                   min(planets[0].ship_count, planets[1].ship_count))
     
