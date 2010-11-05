@@ -13,16 +13,15 @@ class Linear:
     [0, 0.25, 0.5, 0.75, 1], so we could calculate scores using different
     parameters.
     '''
-    normalize = None
+    def normalize(self, x):
+        if self.xmax == self.xmin:
+            return 0
+        else:
+            return (x - self.xmin) / float(self.xmax - self.xmin)
     
     def init(self, data_set):
         self.xmin = min(data_set)
         self.xmax = max(data_set)
-        if self.xmax == self.xmin:
-            self.normalize = lambda x: 0
-        else:
-            self.normalize = lambda x: (x - self.xmin) / float(self.xmax - self.xmin)
-            
             
 if __name__ == "__main__":
     norm_test = Linear()
