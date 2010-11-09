@@ -8,27 +8,26 @@ from planetwars import player, fleet
 from itertools import groupby
 
 class Prediction:
+    planets = None
+    
     def __init__(self, universe):
         self.u = universe
         
     def init_turn(self):
-        destinations = dict()
+        planets = dict()
         for turn, fleets_by_turn in self.u.fleets.arrivals():
-            ##This is the approach below!
+            turn_state = dict()
+            
             destination_getter = attrgetter("destination")
             destination_iter = groupby(sorted(fleets_by_turn,
                                               key=destination_getter))
             for dest, fleets_by_dest in destination_iter:
                 forces = self._calc_forces(dest, fleets_by_dest)
-
-
-#            for dest, fleets_by_destination in sorted(groupby)
-            #calculate forces
-#            forces = dict() #dict of forces: owner => forces
-            #battle
-            
-            #save results
-                pass
+                winner = self._battle(forces)
+                turn_state[dest.id] = winner
+                
+            planets[turn] = turn_state
+        self.planets = planets
             
     def _calc_forces(self, planet, fleets):
         forces = dict()
