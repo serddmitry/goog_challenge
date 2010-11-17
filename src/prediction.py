@@ -14,6 +14,9 @@ class Prediction:
         self.u = universe
         
     def init_turn(self):
+        """Calculate the number of ships with their respective owners, that
+           will be based on planets, taking in account all the ships in motion.
+        """
         planets = dict()
         for turn, fleets_by_turn in self.u.fleets.arrivals():
             turn_state = dict()
@@ -30,6 +33,7 @@ class Prediction:
         self.planets = planets
             
     def _calc_forces(self, planet, fleets):
+        """Aggregate forces approaching the planet on same turn by owner"""
         forces = dict()
         #home force
         forces[planet.owner] = planet.ship_count
@@ -56,24 +60,8 @@ class Prediction:
         
     def ship_count_on_planet(self, planet, turns):
         """
-        Calculate the number of ships that will be present on planet in 
-        specified number of turns.
-        @return: Ships count as int. Positive if planets will be mine, negative
-                 otherwise.
+        @return: tuple of (planet_owner, ship_count) describing planet's state
+                 in specified number of turns.
         """
-        #initial value
-        result = planet.ship_count
-        #+growth rate
-        if planet.owner != player.NOBODY:
-            result += planet.growth_rate * turns
-        if planet.owner != player.ME:
-            sign = -1
-        else:
-            sign = 1            
-        result *= sign
-        #+my fleets
         
-#        for fleet in planet.reinforcement_fleets:
-#            if fleet
-        #-opponent's fleets
         
