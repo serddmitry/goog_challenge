@@ -3,6 +3,7 @@ import normalization
 from planetwars import BaseBot, Game
 from planetwars.universe import Universe
 from strategies.expansion import Expansion
+from prediction import Prediction
 
 # This shows how you can add your own functionality to game objects (Universe in this case).
 log = getLogger(__name__)
@@ -12,9 +13,12 @@ class MyBot(BaseBot):
     def do_turn(self):
         self.universe.init()
         log.info("do turn")
-        strat = Expansion(self.universe)
+        predict = Prediction(self.universe)
+        predict.init_turn()
+        strat = Expansion(self.universe, predict)
         log.info("Strategy selected")
         strat.act()
+        
 
 class MyUniverse(Universe):
     normalization_strategy = normalization.Linear

@@ -13,9 +13,11 @@ class Expansion:
     growth_weight = 1
     dist_weight = 1.5
     available_ships_weight = 1
+    predict = None
     
-    def __init__(self, universe):
+    def __init__(self, universe, prediction):
         self.u = universe
+        self.predict = prediction
     
     def act(self):
         if len(self.u.my_fleets) == 2:
